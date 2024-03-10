@@ -6,8 +6,7 @@ let cutString = (str, strNum) => {
 };
 
 let lineFeed = (str) => {
-    // return str.split("/n");
-    return str.split(" ");
+    return str.split("/n");
 }
 
 export { cutString, lineFeed };
