@@ -3,24 +3,28 @@
         <div :class="{ container: true, 'panel-active': obj.isSignUp }">
             <!--  注册 -->
             <div class="container-form container-signup">
-                <form action="#" class="form" id="form1">
+                <div action="#" class="form" id="form1">
                     <h2 class="form-title">注册账号</h2>
                     <input type="text" placeholder="Account" class="input" v-model="obj.user.account" />
-                    <input type="text" placeholder="Email" class="input" v-model="obj.user.email" />
                     <input type="password" placeholder="Password" class="input" v-model="obj.user.password" />
+                    <input type="text" placeholder="Email" class="input" v-model="obj.user.email" />
+                    <div>
+                        <input type="text" placeholder="Verification" class="input2" v-model="obj.thisVerificationCode">
+                        <button class="btn2" @click="mailboxVerification()">获取验证码</button>
+                    </div>
                     <button type="button" class="btn" @click="enroll()">点击注册</button>
-                </form>
+                </div>
             </div>
             <!-- 登录 -->
             <div class="container-form container-signin">
-                <form action="#" class="form" id="form2">
+                <div action="#" class="form" id="form2">
                     <h2 class="form-title">欢迎登录</h2>
                     <input type="text" placeholder="Account" class="input" v-model="obj.user.account" />
                     <input type="password" placeholder="Password" class="input" v-model="obj.user.password" />
                     <a href="#" class="link">忘记密码?</a>
                     <button type="button" class="btn" @click="login()">登录</button>
                     <a href="#" class="link" @click="goBack()">返回主页</a>
-                </form>
+                </div>
             </div>
             <div class="container-overlay">
                 <div class="overlay">
@@ -46,7 +50,7 @@ import { onMounted, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 let route = useRoute();
-let router = useRouter();   
+let router = useRouter();
 
 //邮箱正则
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -58,6 +62,8 @@ let obj = reactive({
         password: "",
         email: "",
     },
+    verificationCode: '',
+    thisVerificationCode: ''
 });
 
 let clearUser = () => {
@@ -108,10 +114,30 @@ let login = () => {
         });
 }
 
+let mailboxVerification = () => {
+    if (emailRegex.test(obj.user.email)) {
+        alert("正在获取验证码");
+        axios.get("/user/mailboxVerification", {
+            params: {
+                email: obj.user.email
+            }
+        }).then(res => {
+            if (res.data.code == 200) {
+                obj.verificationCode = res.data.data;
+                console.log(res.data.data);
+            } else {
+                alert("验证码获取失败！")
+            }
+        })
+    } else {
+        alert("邮箱不符合规范！");
+    }
+}
+
 //注册方法
 let enroll = () => {
     if (obj.user.account != null && obj.user.email != null && obj.user.password != null) {
-        if (emailRegex.test(obj.user.email)) {
+        if (obj.verificationCode == obj.thisVerificationCode) {
             axios.post("/user/enroll", obj.user).then(res => {
                 if (res.data.code == 201) {
                     if (confirm("注册成功！是否自动登录？")) {
@@ -126,7 +152,7 @@ let enroll = () => {
                 }
             });
         } else {
-            alert("邮箱不符合规范");
+            alert("邮箱验证码有误！")
         }
     } else {
         alert("数据请不要为空");
@@ -231,6 +257,15 @@ onMounted(() => { });
     outline: none;
 }
 
+.input2 {
+    width: 50%;
+    background-color: #fff;
+    padding: 0.9rem 0.9rem;
+    margin: 0.5rem 0;
+    border: none;
+    outline: none;
+}
+
 .btn {
     background-color: #f25d8e;
     box-shadow: 0 4px 4px rgba(255, 112, 159, 0.3);
@@ -246,11 +281,32 @@ onMounted(() => { });
     transition: transform 80ms ease-in;
 }
 
+.btn2 {
+    background-color: #f25d8e;
+    box-shadow: 0 4px 4px rgba(255, 112, 159, 0.3);
+    border-radius: 5px;
+    color: #e7e7e7;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    margin-left: 20px;
+    padding: 0.9rem 0.5rem;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+}
+
 .form>.btn {
     margin-top: 1.5rem;
 }
 
-.btn:active {
+/* .form>.btn2 {
+    margin-top: 0.5rem;
+} */
+
+.btn:active,
+.btn2:active {
     transform: scale(0.95);
 }
 

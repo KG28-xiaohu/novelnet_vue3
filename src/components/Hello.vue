@@ -22,12 +22,16 @@
                     <button class="search_button" @click="searchBook()">🔍</button>
                 </div>
                 <div class="top_nav_right">
-                    <span @click="goBookshelf()"> 书架 </span>
-                    <span v-if="!obj.isLogin" @click="goLogin()">
+                    <span @click="goBookshelf()" class="top_nav_right_bookshelf"> 书架 </span>
+                    <span v-if="!obj.isLogin" @click="goLogin()" class="top_nav_right_personal_center">
                         登录&nbsp;&nbsp;|&nbsp;&nbsp;注册
                     </span>
-                    <span v-if="obj.isLogin" @click="logout()">
+                    <span v-if="obj.isLogin" class="top_nav_right_personal_center">
                         欢迎用户：{{ obj.user.username }}
+                        <ul class="top_nav_right_none_ul">
+                            <li @click="goUserInformation()">个人信息</li>
+                            <li @click="logout()">退出登录</li>
+                        </ul>
                     </span>
                 </div>
             </div>
@@ -85,7 +89,14 @@ let logout = () => {
     obj.isLogin = false;
     sessionStorage.removeItem("user");
     localStorage.removeItem("token");
+    router.push('/hello');
 };
+
+let goUserInformation = () => {
+    router.push({
+        path: '/hello/userInformation'
+    })
+}
 
 let searchBook = () => {
     if (obj.searchStr != null && obj.searchStr != "") {
@@ -101,7 +112,8 @@ let searchBook = () => {
     }
 };
 
-onMounted(() => {
+//重新加载
+let reload = () => {
     let user = sessionStorage.getItem("user");
     if (user) {
         obj.user = JSON.parse(user);
@@ -113,6 +125,10 @@ onMounted(() => {
     axios.get("/book/getType").then((res) => {
         obj.types = res.data.data;
     });
+}
+
+onMounted(() => {
+    reload();
 });
 </script>
 
@@ -171,7 +187,7 @@ onMounted(() => {
 
 /* 类型列表样式 */
 .type_ul {
-    width: 600px;
+    width: 500px;
     list-style-type: none;
     /* 移除默认的列表样式 */
     padding: 0;
@@ -188,7 +204,7 @@ onMounted(() => {
 .type_ul li {
     font-size: 18px;
     /*字体大小*/
-    margin: 0 10px;
+    margin: 0 5px;
     /* 左右外边距 */
     padding: 5px;
     /* 内边距 */
@@ -230,7 +246,7 @@ onMounted(() => {
 
 .search_box {
     height: 35px;
-    margin: 0 50px;
+    margin: 0 10px;
     padding: 0 0 0 10px;
     display: grid;
     grid-template-rows: 1fr;
@@ -251,9 +267,10 @@ onMounted(() => {
     display: flex;
     align-items: center;
     /* 垂直居中 */
-    justify-content: space-between;
+    justify-content: space-;
     /* 水平间距 */
-    width: 150px;
+    min-width: 150px;
+    max-width: 300px;
     /* 宽度设置为100%，或者你可以根据需要设置具体的像素值 */
 }
 
@@ -273,8 +290,43 @@ onMounted(() => {
 
 /* 如果需要设置登录和注册之间的间距，可以给它们添加单独的样式 */
 .top_nav_right span:first-child {
-    margin-right: 20px;
+    margin-right: 10px;
     /* 登录和书架之间的间距 */
+}
+
+.top_nav_right_bookshelf {
+    width: 50px;
+}
+
+.top_nav_right_personal_center {
+    /* width: 200px; */
+    position: relative;
+}
+
+.top_nav_right_personal_center:hover .top_nav_right_none_ul{
+    display: inline-block;
+}
+
+.top_nav_right_none_ul {
+    display: none;
+    width: 77px;
+    color: #000000;
+    list-style: none;
+    padding: 10px;
+    background-color: #ffffff;
+    position: absolute;
+    top: 20px;
+    left: 0px;
+    border-radius: 10px;
+}
+
+.top_nav_right_none_ul li {
+    cursor: pointer;
+    padding: 10px 10px;
+}
+
+.top_nav_right_none_ul li:hover {
+    background-color: #efefef;
 }
 
 .content_box_max {

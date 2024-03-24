@@ -1,12 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import Hello from '../components/Hello.vue';
-import Home from "../components/Home.vue";
-import TypeBook from '../components/TypeBook.vue';
-import Bookshelf from '../components/Bookshelf.vue';
-import Login from '../components/Login.vue';
-import BookDetail from '../components/BookDetail.vue';
-import BookList from '../components/BookList.vue';
-import ReadBook from '../components/ReadBook.vue';
 
 export default createRouter({
   history: createWebHashHistory(),
@@ -17,42 +9,46 @@ export default createRouter({
     },
     {
       path: '/hello',
-      component: Hello,
+      component: () => import('../components/Hello.vue'),
       children: [
         {
           path: '',
-          component: Home
+          component: () => import('../components/Home.vue')
         },
         {
           path: 'home',
-          component: Home
+          component: () => import('../components/Home.vue')
         },
         {
           path: 'typeBook',
-          component: TypeBook
+          component: () => import('../components/TypeBook.vue')
         },
         {
           path: 'bookshelf',
-          component: Bookshelf
+          component: () => import('../components/Bookshelf.vue')
         },
         {
           path: 'bookDetail/:bid',
           name: 'bookDetail',
-          component: BookDetail
+          component: () => import('../components/BookDetail.vue')
         },
         {
           path: 'bookList',
-          component: BookList
+          component: () => import('../components/BookList.vue')
+        },
+        {
+          path: 'userInformation',
+          component: () => import('../components/UserInformation.vue')
         }
       ]
     },
     {
       path: '/login',
-      component: Login
+      component: () => import('../components/Login.vue')
     },
     {
       path: '/readBook',
-      component: ReadBook
+      component: () => import('../components/ReadBook.vue')
     }
   ]
 })
