@@ -5,7 +5,7 @@
             <button @click="router.go(-1)">返回上一页&gt;</button>
         </div>
         <div class="book_detail_top">
-            <img :src="`/src/image/bookImg/${obj.book.imgPath}`" class="book_detail_img" />
+            <img :src="`/image/bookImg/${obj.book.imgPath}`" class="book_detail_img" />
             <div class="book_detail_content">
                 <span class="book_detail_content_name">{{ obj.book.name }}</span>
                 <span class="book_detail_content_author">{{ obj.book.author }}</span>
@@ -33,11 +33,11 @@
                         {{ obj.lastChapterNum == 0 ? '立即阅读' : '继续阅读' }}
                     </button>
                     <div class="book_detail_content_but_praise" @click="thumbsUp()">
-                        <img src="../image/icon/praise.png" alt="">
+                        <img src="/image/icon/praise.png" alt="">
                         <span>好评</span>
                     </div>
                     <div class="book_detail_content_but_collect" @click="collectBook()">
-                        <img src="../image/icon/love.png" alt="">
+                        <img src="/image/icon/love.png" alt="">
                         <span>收藏</span>
                     </div>
                 </div>

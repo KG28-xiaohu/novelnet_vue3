@@ -7,7 +7,7 @@
             </div>
             <div class="book_list_list">
                 <div v-for="(item, index) in obj.books" :key="index" @click="goBookDetail(item.bid)">
-                    <img :src="`/src/image/bookImg/${item.imgPath}`" />
+                    <img :src="`/image/bookImg/${item.imgPath}`" />
                     <div class="book_list_list_content">
                         <span class="book_list_list_content_top">{{ item.name }}</span>
                         <span class="book_list_list_content_middle">

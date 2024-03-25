@@ -28,7 +28,7 @@
             </div>
             <div class="good_novel_list">
                 <div v-for="item,index in obj.books" :key="index" @click="goBookDetail(item.bid)">
-                    <img :src="`/src/image/bookImg/${item.imgPath}`">
+                    <img :src="`/image/bookImg/${item.imgPath}`">
                     <div class="good_novel_list_content">
                         <span class="good_novel_list_content_top">{{ item.name }}</span>
                         <span class="good_novel_list_content_middle">{{ cutString(item.introduction, 30) }}</span>
