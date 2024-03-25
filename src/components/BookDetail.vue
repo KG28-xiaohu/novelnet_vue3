@@ -22,7 +22,7 @@
                 </div>
                 <div>
                     <span class="book_detail_content_issuedTime">
-                        更新时间：{{ obj.book.issuedTime }}
+                        更新时间：{{ obj.book.updateTime }}
                     </span>
                     <span>
                         {{ obj.lastChapterNum == 0 ? '未阅读' : `已看章节：第${obj.lastChapterNum}章  ${obj.lastChapter.title}` }}
